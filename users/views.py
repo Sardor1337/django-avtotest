@@ -50,6 +50,7 @@ class SubmitAnswerView(APIView):
         # 2️⃣ Javob to'g'ri yoki noto‘g‘ri ekanligini tekshirish
         if selected_answer.is_correct:
             is_correct = True
+            correct_answer = Answers.objects.filter(question=question, is_correct=True).first()
             correct_answer_id = None  # To'g'ri javob bo'lsa, boshqa javobni qaytarmaymiz
         else:
             is_correct = False
