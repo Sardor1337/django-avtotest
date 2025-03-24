@@ -8,23 +8,23 @@ from users.managers import CustomUserManager
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
-    typeLanUz = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
+    type = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
     typeLanRu = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
     typeLanKrill = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
     typeLanKarakalpak = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
 
     def __str__(self):
-        return self.typeLanUz  # type ni chiqarish
+        return self.type  # type ni chiqarish
 
 class Table(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
-    nameLanUz = models.CharField(max_length=100, null=True)  # name maydoni integer turida
+    name = models.CharField(max_length=100, null=True)  # name maydoni integer turida
     nameLanRu = models.CharField(max_length=100, null=True)
     nameLanKrill = models.CharField(max_length=100, null=True)
     nameLanKarakalpak = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return str(self.nameLanUz)  # name ni chiqarish
+        return str(self.name)  # name ni chiqarish
 
 class Questions(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
