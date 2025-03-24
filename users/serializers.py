@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from avtotest_project import settings
 from .models import CustomUser, Category
 from rest_framework import serializers
 from .models import CustomUser, UserRole, Table, Correct, Answers, Checkbox, Questions
@@ -18,9 +20,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QuestionsSerializer(serializers.ModelSerializer):
+    Image = serializers.SerializerMethodField()
+
     class Meta:
         model = Questions
         fields = '__all__'
+
+    def get_Image(self, obj):
+        if obj.Image:
+            return f"{settings.MEDIA_URL}{obj.Image}"
+        return None
 
 class TableSerializer(serializers.ModelSerializer):
     class Meta:
