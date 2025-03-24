@@ -12,11 +12,13 @@ from .models import Questions, Answers, Checkbox, CustomUser
 from django.shortcuts import get_object_or_404
 
 
-# 1️⃣ Savol va javoblarni olish
 class GetQuestionView(APIView):
     def get(self, request, question_id):
         question = get_object_or_404(Questions, id=question_id)
-        answers = Answers.objects.filter(question=question)
+        answers = list(Answers.objects.filter(question=question))
+
+        # Javoblarni tasodifiy aralashtirish
+        random.shuffle(answers)
 
         data = {
             "question": {
@@ -34,7 +36,6 @@ class GetQuestionView(APIView):
             ]
         }
         return Response(data, status=status.HTTP_200_OK)
-
 
 class SubmitAnswerView(APIView):
     def post(self, request):
