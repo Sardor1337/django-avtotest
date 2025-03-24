@@ -2,7 +2,8 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from users.views import CategoryListView, CustomTokenObtainPairView, QuestionsByCategoryView, GetQuestionView, \
-    SubmitAnswerView, UserResultsView, RandomQuestionsView
+    SubmitAnswerView, UserResultsView, RandomQuestionsView, QuestionsByTableView, TableListView, \
+    SaveOrUpdateCorrectAPIView, GetUserCorrectAPIView
 
 urlpatterns = [
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -13,4 +14,8 @@ urlpatterns = [
     path('submit-answer/', SubmitAnswerView.as_view(), name='submit_answer'),
     path('user-results/', UserResultsView.as_view(), name='user_results'),
     path('random-questions/<int:count>/', RandomQuestionsView.as_view(), name='random-questions'),
+    path('questions/<int:table_id>/', QuestionsByTableView.as_view(), name='questions-by-table'),
+    path('tables/', TableListView.as_view(), name='table-list'),
+    path('api/save-correct/', SaveOrUpdateCorrectAPIView.as_view(), name='save_correct'),
+    path('api/user-correct/<int:user_id>/', GetUserCorrectAPIView.as_view(), name='user_correct'),
 ]
