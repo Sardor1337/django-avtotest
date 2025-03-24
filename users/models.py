@@ -8,17 +8,23 @@ from users.managers import CustomUserManager
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
-    type = models.CharField(max_length=255)  # type maydoni varchar turida
+    typeLanUz = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
+    typeLanRu = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
+    typeLanKrill = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
+    typeLanKarakalpak = models.CharField(max_length=255, null=True)  # type maydoni varchar turida
 
     def __str__(self):
-        return self.type  # type ni chiqarish
+        return self.typeLanUz  # type ni chiqarish
 
 class Table(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
-    name = models.CharField(max_length=100)  # name maydoni integer turida
+    nameLanUz = models.CharField(max_length=100, null=True)  # name maydoni integer turida
+    nameLanRu = models.CharField(max_length=100, null=True)
+    nameLanKrill = models.CharField(max_length=100, null=True)
+    nameLanKarakalpak = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return str(self.name)  # name ni chiqarish
+        return str(self.nameLanUz)  # name ni chiqarish
 
 class Questions(models.Model):
     id = models.AutoField(primary_key=True)  # PK maydon
@@ -45,7 +51,7 @@ class CustomUser(AbstractUser):
     user_role =  models.ForeignKey(UserRole, null=True, blank=True, on_delete=models.SET_NULL)
     phone_number = models.CharField(max_length=15, unique=True)  # phone_numberni username sifatida ishlatish
     create_time = models.DateTimeField(auto_now_add=True)
-    username = models.CharField(max_length=255, unique=True, blank=True, null=True,
+    username = models.CharField(max_length=255, unique=False, blank=True, null=True,
                                 default="user_{}".format(str(uuid.uuid4())))
     end_time = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
