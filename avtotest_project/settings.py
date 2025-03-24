@@ -13,13 +13,13 @@ from datetime import timedelta
 from pathlib import Path
 import environ
 from django.conf.global_settings import STATICFILES_DIRS, STATIC_ROOT
-
+import os, dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
-
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'avtotest_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-import os, dj_database_url
+
 
 
 DATABASES = {

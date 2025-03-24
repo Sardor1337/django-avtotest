@@ -16,8 +16,6 @@ class GetQuestionView(APIView):
     def get(self, request, question_id):
         question = get_object_or_404(Questions, id=question_id)
         answers = list(Answers.objects.filter(question=question))
-
-        # Javoblarni tasodifiy aralashtirish
         random.shuffle(answers)
 
         data = {
@@ -27,15 +25,19 @@ class GetQuestionView(APIView):
                 "LanKrill": question.LanKrill,
                 "LanRu": question.LanRu,
                 "LanKarakalpak": question.LanKarakalpak,
-                "Image": question.Image.url if question.Image else None
+                "Image": request.build_absolute_uri(question.Image.url) if question.Image else None
             },
             "answers": [
-                {"id": ans.id, "LanUz": ans.LanUz, "LanKrill": ans.LanKrill,
-                 "LanRu": ans.LanRu, "LanKarakalpak": ans.LanKarakalpak, "is_correct": ans.is_correct}
+                {
+                    "id": ans.id, "LanUz": ans.LanUz, "LanKrill": ans.LanKrill,
+                    "LanRu": ans.LanRu, "LanKarakalpak": ans.LanKarakalpak,
+                    "is_correct": ans.is_correct
+                }
                 for ans in answers
             ]
         }
         return Response(data, status=status.HTTP_200_OK)
+
 
 class SubmitAnswerView(APIView):
     def post(self, request):
