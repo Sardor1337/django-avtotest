@@ -120,15 +120,8 @@ class RandomQuestionsView(APIView):
 
 class QuestionsByTableView(APIView):
     def get(self, request, table_id):
-        # Berilgan table_id ga tegishli savollarni olish
-        table = get_object_or_404(Table, id=table_id)
-        questions = Questions.objects.filter(tableId=table)
-
-        # Faqat savollarning IDlarini qaytarish
-        question_ids = [question.id for question in questions]
-
-        return Response({"questions": question_ids}, status=status.HTTP_200_OK)
-
+        question_ids = Questions.objects.filter(tableId_id=table_id).values_list('id', flat=True)
+        return Response({"questions_id": list(question_ids)}, status=status.HTTP_200_OK)
 
 class TableListView(APIView):
     permission_classes = [IsAuthenticated]  # Faqat token bilan kirish mumkin

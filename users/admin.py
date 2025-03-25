@@ -12,17 +12,37 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ['phone_number']
     ordering = ['id']
 
-    # `fieldsets` ni yangilash, takrorlanmasligini ta'minlash
-    fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phone_number', 'user_role')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
-        ('Misc', {'fields': ('end_time',)}),
-    )
+    def get_queryset(self, request):
+        """ Superadmin bo‘lmaganlar superuserlarni ko‘rmasligi uchun querysetni filter qilamiz """
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            qs = qs.filter(is_superuser=False)  # Superadmin bo‘lmaganlarga faqat oddiy userlarni ko‘rsatamiz
+        return qs
+
+    def get_fieldsets(self, request, obj=None):
+        """ Agar obj mavjud bo‘lmasa (yangi user qo‘shilayotgan bo‘lsa), add_fieldsetsni ishlatamiz """
+        if not obj:
+            return self.add_fieldsets  # Yangi foydalanuvchi qo‘shilayotganda `add_fieldsets` ishlaydi
+
+        # Superadmin bo'lmasa, `first_name` va `last_name` yashiriladi
+        if request.user.is_superuser:
+            return (
+                (None, {'fields': ('password',)}),
+                ('Personal info', {'fields': ('phone_number', 'user_role')}),
+                ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+                ('Misc', {'fields': ('end_time',)}),
+            )
+        else:
+            return (
+                (None, {'fields': ('password',)}),
+                ('Personal info', {'fields': ('phone_number', 'user_role')}),
+                # first_name va last_name olib tashlandi
+                ('Permissions', {'fields': ('is_active',)}),
+                ('Misc', {'fields': ('end_time',)}),
+            )
 
     add_fieldsets = (
-        (None, {'fields': ('phone_number', 'password1', 'password2', 'end_time' , 'is_active', 'is_staff', 'user_role')}),
+        (None, {'fields': ('phone_number', 'password1', 'password2', 'end_time', 'is_active', 'user_role')}),
     )
 
 
